@@ -1,0 +1,3 @@
+/Users/h1/11-ejercicio-casino-polimorfismo-AndresLopez701/build/CMakeFiles/casino.dir
+/Users/h1/11-ejercicio-casino-polimorfismo-AndresLopez701/build/CMakeFiles/edit_cache.dir
+/Users/h1/11-ejercicio-casino-polimorfismo-AndresLopez701/build/CMakeFiles/rebuild_cache.dir

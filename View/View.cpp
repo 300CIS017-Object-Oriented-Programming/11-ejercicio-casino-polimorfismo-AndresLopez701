@@ -1,138 +1,139 @@
-//
-// Created by lufe0 on 7/05/2021.
-// Modificada el 30 de 30/03/2022
-//
-
 #include "View.h"
+#include <iostream>
 
-void View::agregarJugador() {
-    // Esta linea de codigo controla la excepcion que lanza el casino y lo muestra en pantalla
-    try {
-        casino.agregarJugador();
-    } catch (std::invalid_argument &ex) {
-        // Controla la aparecion de errores.
-        // what es el metodo que muestra el mensaje de error de las excepciones
-        cout << "ERROR con parámetros: " << ex.what();
-    } catch (std::exception &ex) {
-        cout << "ERROR contactate al adminstrador " << ex.what();
-    }
-
-}
-
-void View::jugarView() {
-    try {
-        long idJugador;
-        cout << "Ingrese el id del jugador para el que quiere jugar \n";
-        cin >> idJugador;
-
-        float cantGonzos;
-        cout << "Cuantos gonzos desea apostar \n";
-        cin >> cantGonzos;
-
-        // Hace toda la logica de jugar.
-        int idJuego;
-        float gonzosResultado;
-
-        cout << "Elija el juego: " << endl;
-        cout << "1. Mayor a 13." << endl;
-        cout << "2. Dos colores." << endl;
-        cout << "3. Slots" << endl;
-        cout << "Opcion: ";
-        cin >> idJuego;
-        std::string textoResultado;
-        gonzosResultado = casino.jugar(idJuego, idJugador, cantGonzos);
-        if (gonzosResultado > 0) {
-            textoResultado = "Haz ganado!: ";
-        } else {
-            textoResultado = "Haz perdido :(!: ";
-        }
-        cout << textoResultado << gonzosResultado << " Gonzos" << endl;
-
-    } catch (std::domain_error &ex) {
-        // Se muestran los mensajes de excepcion obtenidos
-        cout << ex.what();
-    }
-}
-
-int View::mostrarMenu() {
-    int opcion;
-    cout << "Menu\n";
-    cout << "1. Agregar jugador " << std::endl;
-    cout << "2. Jugar" << std::endl;
-    cout << "3. Consultar jugador  " << std::endl;
-    cout << "4. Recargar gonzos " << std::endl;
-    cout << "5. Retirar jugador casino " << std::endl;
-    cout << "0. Salir\n"
-         << std::endl;
-    cout << "Digita el numero: ";
-    cin >> opcion;
-    return opcion;
-}
+using namespace std;
 
 void View::verPrincipal() {
     int opcion;
+
     do {
-        opcion = mostrarMenu();
+        cout << "\n------ BIENVENIDO AL CASINO ------" << endl;
+        cout << "1. Agregar jugador" << endl;
+        cout << "2. Jugar" << endl;
+        cout << "3. Ver información del jugador" << endl;
+        cout << "4. Recargar Gonzos" << endl;
+        cout << "5. Retirar jugador" << endl;
+        cout << "6. Ver reglas de un juego" << endl;
+        cout << "0. Salir" << endl;
+        cout << "Seleccione una opción: ";
+        cin >> opcion;
+
         switch (opcion) {
             case 1:
-                agregarJugador();
+                casino.agregarJugador();
                 break;
             case 2:
                 jugarView();
                 break;
             case 3:
-                mostrarJugador();
+                verInfoJugadorView();
                 break;
             case 4:
-                recargarGonzos();
+                recargarGonzosView();
                 break;
             case 5:
-                retirarJugador();
+                retirarJugadorView();
+                break;
+            case 6:
+                mostrarReglasJuego();
                 break;
             case 0:
-                cout << "Hasta pronto !";
+                cout << "¡Gracias por visitar el Casino Gon$ino!" << endl;
                 break;
             default:
-                cout << "No hay ninguna opcion para ese numero";
+                cout << "Opción inválida. Intente nuevamente." << endl;
         }
     } while (opcion != 0);
 }
 
-void View::mostrarJugador() {
+void View::jugarView() {
     long idJugador;
+    int idJuego;
+    float gonzos;
+
+    cout << "\nIngrese su ID de jugador: ";
+    cin >> idJugador;
+
+    cout << "Seleccione el juego que desea jugar:" << endl;
+    cout << "1. Mayor de 13" << endl;
+    cout << "2. Dos Colores" << endl;
+    cout << "3. Slots" << endl;
+    cout << "4. Par o Impar" << endl;
+    cout << "Seleccione opción: ";
+    cin >> idJuego;
+
+    cout << "Ingrese la cantidad de Gonzos a apostar: ";
+    cin >> gonzos;
+
     try {
-        cout << "Ingrese el id del jugador: ";
-        cin >> idJugador;
-        casino.verInfoJugador(idJugador);
-    } catch (std::domain_error &ex) {
-        // Se muestra un error si el usuario no existe
-        cout << ex.what();
+        float resultado = casino.jugar(idJuego, idJugador, gonzos);
+        if (resultado >= 0) {
+            cout << "¡Ganaste " << resultado << " Gonzos!" << endl;
+        } else {
+            cout << "Perdiste " << -resultado << " Gonzos." << endl;
+        }
+        cout << "Equivalente en pesos: $" << (resultado * 100) << endl;
+    } catch (const exception &e) {
+        cout << "Error: " << e.what() << endl;
     }
 }
 
-void View::retirarJugador() {
+void View::verInfoJugadorView() {
     long idJugador;
+    cout << "\nIngrese el ID del jugador: ";
+    cin >> idJugador;
+
     try {
-        cout << "Ingrese el id del jugador: ";
-        cin >> idJugador;
         casino.verInfoJugador(idJugador);
-        casino.retirarJugador(idJugador);
-        cout << "Jugador retirado con exito." << std::endl;
-    } catch (std::domain_error &ex) {
-        // Se muestra un error si el usuario no existe
-        std::cout << ex.what();
+    } catch (const exception &e) {
+        cout << "Error: " << e.what() << endl;
     }
 }
 
-void View::recargarGonzos() {
+void View::recargarGonzosView() {
     long idJugador;
+    cout << "\nIngrese el ID del jugador: ";
+    cin >> idJugador;
+
     try {
-        cout << "Ingrese el id del jugador: ";
-        cin >> idJugador;
         casino.recargarGonzos(idJugador);
-        cout << "Recarga realizada con exito." << std::endl;
-    } catch (std::domain_error &ex) {
-        // Se muestra un error si el usuario no existe
-        cout << ex.what();
+    } catch (const exception &e) {
+        cout << "Error: " << e.what() << endl;
+    }
+}
+
+void View::retirarJugadorView() {
+    long idJugador;
+    cout << "\nIngrese el ID del jugador a retirar: ";
+    cin >> idJugador;
+
+    try {
+        casino.retirarJugador(idJugador);
+        cout << "Jugador eliminado exitosamente." << endl;
+    } catch (const exception &e) {
+        cout << "Error: " << e.what() << endl;
+    }
+}
+
+void View::mostrarReglasJuego() {
+    int opcion;
+    cout << "\nSeleccione el juego para ver sus reglas:" << endl;
+    cout << "1. Mayor de 13" << endl;
+    cout << "2. Dos Colores" << endl;
+    cout << "3. Slots" << endl;
+    cout << "4. Par o Impar" << endl;
+    cout << "Seleccione opción: ";
+    cin >> opcion;
+
+    if (opcion < 1 || opcion > 4) {
+        cout << "Opción inválida." << endl;
+        return;
+    }
+
+    try {
+        vector<Juego*> juegos = casino.getJuegosDisponibles();
+        juegos.at(opcion - 1)->mostrarReglas();
+    } catch (const exception &e) {
+        cout << "Error al mostrar reglas: " << e.what() << endl;
     }
 }
