@@ -1,31 +1,30 @@
-//
-// Created by lufe0 on 8/05/2021.
-//
-
 #include "DosColores.h"
+#include <iostream>
+
+using namespace std;
 
 float DosColores::jugar(float gonzosApostar) {
     float gonzosResultado;
-    srand(time(nullptr));
     int numMaxRandom = 7;
     int numMinRandom = 1;
-    // para calcular numero aleatorio variable = limite_inferior + rand() % (limite_superior +1 - limite_inferior) ;
-    numeroJugador = numMinRandom + rand() % numMaxRandom;// numeros de 1 a 13
-    numeroCasino = numMinRandom + rand() % numMaxRandom;// numeros de 1 a 13
-    colorCasino = rand() % 2; // Numero entre 0 y 1
-    cout << "Tu numero aleatorio es: " << numeroJugador << endl;
-    cout << "Elije un color: " << endl;
-    cout << "1. Blanco" << endl;
-    cout << "2. Negro" << endl;
-    cin >> colorJugador;
-    --colorJugador; // Se ajusta el valor del color
-    cout << "Numero casino: " << numeroCasino << endl;
-    cout << "Color casino: ";
-    if (colorCasino == 0) {
-        cout << "Blanco." << endl;
-    } else {
-        cout << "Negro." << endl;
-    }
+
+    // Se generan los números aleatorios
+    numeroJugador = numMinRandom + rand() % numMaxRandom; // número de 1 a 6
+    numeroCasino = numMinRandom + rand() % numMaxRandom;
+    colorCasino = rand() % 2; // 0 o 1
+
+    cout << "Tu número aleatorio es: " << numeroJugador << endl;
+    do {
+        cout << "Elije un color: " << endl;
+        cout << "1. Blanco" << endl;
+        cout << "2. Negro" << endl;
+        cin >> colorJugador;
+        --colorJugador; // Ajustar el valor ingresado (1 → 0, 2 → 1)
+    } while (colorJugador != 0 && colorJugador != 1); // Validación de entrada
+
+    cout << "Número del casino: " << numeroCasino << endl;
+    cout << "Color del casino: " << (colorCasino == 0 ? "Blanco" : "Negro") << endl;
+
     gonzosResultado = calcularResultado(gonzosApostar);
     return gonzosResultado;
 }
@@ -35,25 +34,32 @@ float DosColores::calcularResultado(float gonzosApostar) {
     float maxResult = 4;
     float midResult = 1.5;
 
-    // Si coincide tanto el valor del dado como el color, el usuario ganará 4 veces lo apostado
+    // Coincide número y color
     if (numeroJugador == numeroCasino && colorJugador == colorCasino) {
         return maxResult * gonzosApostar;
     }
-        // coincide sólo con el valor del dado ganará 0.5 veces lo apostado
+    // Coincide solo el número
     else if (numeroJugador == numeroCasino) {
         return midResult * gonzosApostar;
     }
-        // no gana ni pierde
+    // Coincide solo el color
     else if (colorJugador == colorCasino) {
-        return gonzosApostar;
+        return gonzosApostar; // No gana ni pierde
     }
-        // pierde lo apostado
+    // No coincide nada
     else {
         return lowestResult;
     }
 }
-/* Como el constructor se definio por defecto no hay que poner constructo vacio
-DosColores::~DosColores() {
 
+// Nueva implementación de mostrarReglas()
+void DosColores::mostrarReglas() const {
+    cout << "\n------ Reglas del juego 'Dos Colores' ------\n";
+    cout << "- El jugador lanza un dado (1 a 6) y elige un color (Blanco o Negro).\n";
+    cout << "- El casino también lanza un dado y selecciona un color aleatoriamente.\n";
+    cout << "- Coincidencia de número y color: gana 4x lo apostado.\n";
+    cout << "- Solo número: gana 1.5x.\n";
+    cout << "- Solo color: no gana ni pierde.\n";
+    cout << "- Ninguna coincidencia: pierde todo.\n";
+    cout << "---------------------------------------------\n" << endl;
 }
-*/

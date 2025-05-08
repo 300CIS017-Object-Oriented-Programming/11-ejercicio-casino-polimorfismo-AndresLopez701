@@ -17,17 +17,20 @@ private:
     int mostrarMenu();
 
     void jugarView();
-
     void agregarJugador();
-
     void retirarJugador();
-
     void mostrarJugador();
-
     void recargarGonzos();
 
 public:
     View() = default; // Escribe un constructor por defecto
+
+    // Métodos públicos que faltaban declarar
+    void verInfoJugadorView(); // Agregado
+    void recargarGonzosView(); // Agregado
+    void retirarJugadorView(); // Agregado
+    void mostrarReglasJuego(); // Agregado
+
     void verPrincipal();
 };
 

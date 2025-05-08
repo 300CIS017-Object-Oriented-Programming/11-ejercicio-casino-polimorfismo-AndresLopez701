@@ -6,9 +6,9 @@
 #define CASINO_DOSCOLORES_H
 
 #include "Juego.h"
-#include<cstdlib>
-#include<ctime>
-
+#include <cstdlib>
+#include <ctime>
+#include <iostream>
 
 class DosColores : public Juego {
 
@@ -21,9 +21,10 @@ protected:
 public:
     float jugar(float gonzosApostar) override;
 
-    ~DosColores() override = default; // Hace que se defina un constuctor por defecto
+    ~DosColores() override = default;
 
+    // Nuevo método obligatorio que muestra las reglas del juego
+    void mostrarReglas() const override;
 };
-
 
 #endif //CASINO_DOSCOLORES_H

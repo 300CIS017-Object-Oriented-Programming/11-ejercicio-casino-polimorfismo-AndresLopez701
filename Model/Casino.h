@@ -13,7 +13,7 @@
 #include "Mayor13.h"
 #include "DosColores.h"
 #include "Slots.h"
-
+#include "ParImpar.h"
 
 using std::cin;
 using std::cout;
@@ -25,32 +25,31 @@ using std::iterator;
 
 class Casino {
 private:
-    vector<Juego *> juegosDisponibles;
-    unordered_map<long, Jugador *> jugadoresMap;
+    vector<Juego *> juegosDisponibles; // Almacena los juegos disponibles en el casino
+    unordered_map<long, Jugador *> jugadoresMap; // Mapa de jugadores por ID
 
-    bool
-    verPuedeContinuar(int idJugador, float gonzosApostar); // True si tiene saldo para jugar, false en caso contrario
+    bool verPuedeContinuar(int idJugador, float gonzosApostar); // Verifica si el jugador tiene suficiente saldo para jugar
 
 public:
-    Casino();
+    Casino(); // Constructor
 
-    virtual ~Casino();
+    virtual ~Casino(); // Destructor
 
-    float convertirPesosAGonzos(float dinero);
+    float convertirPesosAGonzos(float dinero); // Convierte los pesos a Gonzos
 
-    bool verExisteJugador(long id);
+    bool verExisteJugador(long id); // Verifica si el jugador existe
 
-    void retirarJugador(long id);
+    void retirarJugador(long id); // Retira un jugador del casino
 
-    void agregarJugador();
+    void agregarJugador(); // Agrega un nuevo jugador al casino
 
-    // Retorna los gonzos ganados o perdidos por el jugador. Ganados positivos, perdidos negativos
-    float jugar(int idJuego, long idJugador, float gonzosApostar);
+    float jugar(int idJuego, long idJugador, float gonzosApostar); // Inicia un juego para un jugador
 
-    void verInfoJugador(long idJugador);
+    void verInfoJugador(long idJugador); // Muestra la información del jugador
 
-    void recargarGonzos(long idJugador);
+    void recargarGonzos(long idJugador); // Recarga los Gonzos de un jugador
 
+    vector<Juego*> getJuegosDisponibles(); // Devuelve el vector de juegos disponibles
 };
 
 #endif //CASINO_CASINO_H
